@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import uz.kassa.microservice.saga.gateway.SagaGateway;
-import uz.kassa.microservice.saga.test.Saga3EventHandler;
-import uz.kassa.microservice.saga.test.SagaEventtt;
-import uz.kassa.microservice.saga.test.SagaSecondEventtt;
-import uz.kassa.microservice.saga.test.SagaTest2EventHandler;
+import uz.kassa.microservice.saga.test.saga1.Saga1EventHandler;
+import uz.kassa.microservice.saga.test.saga2.Saga2EventHandler1;
+import uz.kassa.microservice.saga.test.saga2.Saga2EventHandler2;
+import uz.kassa.microservice.saga.test.saga2.Saga2EventHandler3;
 
 /**
  * @author Tadjiev Dilshod
@@ -19,20 +19,20 @@ public class SagaGatewayTests {
 
     @Test
     void contextLoads() {
-        SagaEventtt sagaEventtt = new SagaEventtt();
-        sagaEventtt.setIdentifier("122");
+        Saga2EventHandler1 saga2EventHandler1 = new Saga2EventHandler1();
+        saga2EventHandler1.setIdentifier("122");
 
-        SagaSecondEventtt sagaEventtt1 = new SagaSecondEventtt();
+        Saga2EventHandler2 sagaEventtt1 = new Saga2EventHandler2();
         sagaEventtt1.setName("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         sagaEventtt1.setIdentifier("122");
 
-        SagaTest2EventHandler sagaEventtt2 = new SagaTest2EventHandler();
+        Saga2EventHandler3 sagaEventtt2 = new Saga2EventHandler3();
         sagaEventtt2.setIdentifier("122");
 
-        Saga3EventHandler sagaEventttSaga3 = new Saga3EventHandler();
+        Saga1EventHandler sagaEventttSaga3 = new Saga1EventHandler();
         sagaEventttSaga3.setIdentifier("122");
 
-        sagaGateway.send(sagaEventtt);
+        sagaGateway.send(saga2EventHandler1);
         sagaGateway.send(sagaEventtt2);
         sagaGateway.send(sagaEventttSaga3);
         sagaGateway.send(sagaEventtt1);
@@ -40,7 +40,7 @@ public class SagaGatewayTests {
 
     @Test
     void contextLoads22() {
-        SagaSecondEventtt sagaEventtt = new SagaSecondEventtt();
+        Saga2EventHandler2 sagaEventtt = new Saga2EventHandler2();
         sagaEventtt.setIdentifier("122");
         sagaGateway.send(sagaEventtt);
     }
