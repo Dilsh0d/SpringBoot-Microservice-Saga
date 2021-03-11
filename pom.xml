@@ -36,8 +36,6 @@
 		<developer>
 			<name>Tadjiev Dilshod</name>
 			<email>dilshod.toj@gmail.com</email>
-			<organization>UzKassa, Inc.</organization>
-			<organizationUrl>https://uzkassa.uz</organizationUrl>
 		</developer>
 	</developers>
 
@@ -131,15 +129,30 @@
 							</execution>
 						</executions>
 					</plugin>
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-javadoc-plugin</artifactId>-->
+<!--						<version>3.2.0</version>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>attach-javadocs</id>-->
+<!--								<goals>-->
+<!--									<goal>jar</goal>-->
+<!--								</goals>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.2.0</version>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
 						<executions>
 							<execution>
-								<id>attach-javadocs</id>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
 								<goals>
-									<goal>jar</goal>
+									<goal>sign</goal>
 								</goals>
 							</execution>
 						</executions>
