@@ -41,8 +41,6 @@
 
 	<scm>
 		<url>https://github.com/Dilsh0d/SpringBoot-Microservice-Saga</url>
-		<connection>scm:git:git@github.com:rainerhahnekamp/superlib.git</connection>
-		<developerConnection>scm:git:git@github.com:rainerhahnekamp/superlib.git</developerConnection>
 	</scm>
 
 	<dependencies>
