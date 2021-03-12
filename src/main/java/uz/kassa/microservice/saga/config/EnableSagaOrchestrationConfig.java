@@ -1,5 +1,6 @@
 package uz.kassa.microservice.saga.config;
 
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,6 +22,7 @@ import uz.kassa.microservice.saga.gateway.SagaKafkaListener;
 @ConditionalOnClass({KafkaAutoConfiguration.class})
 @Import(SpringSagaAutoConfigurer.class)
 @EnableConfigurationProperties(SagaConfigProperties.class)
+@AutoConfigureBefore(RedisConfig.class)
 public class EnableSagaOrchestrationConfig {
 
     @Bean
