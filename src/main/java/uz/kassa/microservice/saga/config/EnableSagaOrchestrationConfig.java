@@ -1,12 +1,13 @@
 package uz.kassa.microservice.saga.config;
 
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,7 +23,10 @@ import uz.kassa.microservice.saga.gateway.SagaKafkaListener;
 @ConditionalOnClass({KafkaAutoConfiguration.class})
 @Import(SpringSagaAutoConfigurer.class)
 @EnableConfigurationProperties(SagaConfigProperties.class)
-@AutoConfigureBefore(RedisConfig.class)
+@AutoConfigureAfter(name = {
+        "uz.kassa.microservice.saga.config.RedisConfig"
+})
+@EnableRedisRepositories(value = "uz.kassa.microservice.saga.model.repository")
 public class EnableSagaOrchestrationConfig {
 
     @Bean

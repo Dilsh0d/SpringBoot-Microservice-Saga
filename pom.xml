@@ -13,7 +13,7 @@
 
 	<groupId>io.github.dilsh0d</groupId>
 	<artifactId>spring-microservice-saga</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4</version>
 
 	<name>SpringBoot Microservice Saga Orchestration design pattern</name>
 	<description>Microservice Saga Orchestration  design pattern</description>
