@@ -1,8 +1,10 @@
 package uz.kassa.microservice.saga.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.convert.RedisCustomConversions;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import uz.kassa.microservice.saga.model.convertor.event.BytesToEventsDataConverter;
 import uz.kassa.microservice.saga.model.convertor.event.EventsDataToBytesConverter;
 import uz.kassa.microservice.saga.model.convertor.saga.BytesToSagaDataConverter;
@@ -14,6 +16,7 @@ import java.util.Arrays;
  * @author Tadjiev Dilshod
  */
 @Configuration
+@ComponentScan("uz.kassa.microservice.saga.model.repository")
 public class RedisConfig {
 
     @Bean
