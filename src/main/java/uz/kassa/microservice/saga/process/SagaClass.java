@@ -117,6 +117,9 @@ public class SagaClass<T> {
                     && configurer.eventsBlockedQueueMap.get(sagaId).size() == 0) {
                 configurer.associateSagaMap.remove(sagaId);
             }
+            if(configurer.eventsBlockedQueueMap.containsKey(sagaId) && configurer.eventsBlockedQueueMap.get(sagaId).size()==0){
+                configurer.eventsBlockedQueueMap.remove(sagaId);
+            }
         }
 
         @Override
