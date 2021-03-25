@@ -3,6 +3,7 @@ package uz.kassa.microservice.saga.process;
 import uz.kassa.microservice.saga.common.SagaDoesNotFindByAssociateIdException;
 import uz.kassa.microservice.saga.common.SagaInstancesCreateException;
 import uz.kassa.microservice.saga.event.SagaEventMessage;
+import uz.kassa.microservice.saga.event.SagaExceptionHandler;
 import uz.kassa.microservice.saga.model.domain.SagaEntry;
 import uz.kassa.microservice.saga.model.embeded.EventsData;
 import uz.kassa.microservice.saga.model.embeded.SagaData;
@@ -15,13 +16,17 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 /**
  * @author Tadjiev Dilshod
  */
 public class SagaClass<T> {
 
+    private Logger logger = Logger.getLogger(SagaClass.class.getName());
+
     private final Class<T> type;
+    private SagaExceptionMethod sagaExceptionMethod;
     private Supplier<SagaRepository> sagaStoreSupplier;
     private Supplier<SagaResourceInject> sagaResourceInjectorSupplier;
     private Map<String,SagaEventClass> sagaClassEventMap = new HashMap<>();
@@ -42,6 +47,12 @@ public class SagaClass<T> {
         sagaClassEventMap.put(eventClass.getParamClass(),eventClass);
     }
 
+
+    public void addExceptionHandler(SagaExceptionMethod sagaExceptionMethod) {
+        this.sagaExceptionMethod = sagaExceptionMethod;
+    }
+
+
     public boolean isSagaEvent(String _clazz){
         return sagaClassEventMap.containsKey(_clazz);
     }
@@ -59,6 +70,8 @@ public class SagaClass<T> {
     }
 
     public static class SagaClassInstancesImpl<S> implements SagaClassInstances,Runnable {
+
+        private Logger logger = Logger.getLogger(SagaClassInstancesImpl.class.getName());
 
         private SagaClass<S> configurer;
         private Supplier<S> sagaFactory = () -> newInstance(configurer.type);
@@ -130,10 +143,46 @@ public class SagaClass<T> {
                 invokeSagaMethod(sagaRoot, sagaEventClass, eventMessage);
                 saveSagaState(eventMessage, sagaEventClass, sagaRoot);
             } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
+                if (configurer.sagaExceptionMethod != null) {
+                    exceptionHandler(eventMessage,e);
+                }
+                logger.warning("Exception: " + eventMessage.getType() + " sagaId=" + eventMessage.getId() + " event " + eventMessage.getPayload().getClass().getName() + " exception " + e.getMessage());
             }
+        }
 
+        private void exceptionHandler(SagaEventMessage eventMessage, Exception exception) {
+            try {
+                SagaEventClass sagaEventClass = getEventClass(eventMessage.getType());
+                S sagaRoot = sagaResourcesInject(eventMessage, sagaEventClass);
+                invokeSagaExceptionMethod(sagaRoot, configurer.sagaExceptionMethod,exception,sagaEventClass, eventMessage);
+                saveSagaState(eventMessage, sagaEventClass, sagaRoot);
+            } catch (Exception e) {
+                logger.warning("Exception: " + eventMessage.getType() + " sagaId=" + eventMessage.getId() + " event " + eventMessage.getPayload().getClass().getName() + " exception " + e.getMessage());
+            }
+        }
+
+        private void invokeSagaExceptionMethod(S sagaRoot, SagaExceptionMethod sagaExceptionMethod, Exception exception, SagaEventClass sagaEventClass, SagaEventMessage eventMessage) {
+            try {
+                if (sagaExceptionMethod.getParamClass() != null
+                        && SagaExceptionHandler.class.getName().equals(sagaExceptionMethod.getParamClass())) {
+                    SagaExceptionHandler sagaExceptionHandler = new SagaExceptionHandler();
+                    sagaExceptionHandler.setSagaId(eventMessage.getId());
+                    sagaExceptionHandler.setException(exception);
+                    sagaExceptionHandler.setSagaEventClass(sagaEventClass);
+
+                    Method method = sagaRoot.getClass().getDeclaredMethod(sagaExceptionMethod.getMethodName(), eventMessage.getPayload().getClass());
+                    method.invoke(sagaRoot, sagaExceptionHandler);
+                } else if (sagaExceptionMethod.getParamClass() == null) {
+                    Method method = sagaRoot.getClass().getDeclaredMethod(sagaExceptionMethod.getMethodName(), eventMessage.getPayload().getClass());
+                    method.invoke(sagaRoot);
+                }
+            } catch (NoSuchMethodException e) {
+                logger.warning("NoSuchMethodException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+            } catch (IllegalAccessException e) {
+                logger.warning("IllegalAccessException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+            } catch (InvocationTargetException e) {
+                logger.warning("InvocationTargetException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+            }
         }
 
 
@@ -142,11 +191,11 @@ public class SagaClass<T> {
                 Method method = sagaRoot.getClass().getDeclaredMethod(sagaEventClass.getMethodName(), eventMessage.getPayload().getClass());
                 method.invoke(sagaRoot, eventMessage.getPayload());
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                logger.warning("NoSuchMethodException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                logger.warning("IllegalAccessException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                logger.warning("InvocationTargetException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
             }
         }
 
@@ -155,7 +204,7 @@ public class SagaClass<T> {
             if (sagaEventClass.isStarter()) {
                 sagaRoot = sagaFactory.get();
             } else {
-                Optional<SagaEntry> sagaEntryOptional = repository().findById(eventMessage.getId());
+                Optional<SagaEntry> sagaEntryOptional = repository().findByIdAndSagaType(eventMessage.getId(),eventMessage.getType());
                 if (sagaEntryOptional.isPresent()) {
                     this.sagaEntry = sagaEntryOptional.get();
                     sagaRoot = (S) sagaEntryOptional.get().getPayload().getPayload();
@@ -194,7 +243,7 @@ public class SagaClass<T> {
                 reentrantLock().lock();
                 eventHandlerProcess(getSagaEventMessage());
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.warning("InterruptedException: " + type().getName() + " exception " + e.getMessage());
             } finally {
                 reentrantLock().unlock();
                 clear();

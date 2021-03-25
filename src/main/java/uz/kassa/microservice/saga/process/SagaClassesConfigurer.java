@@ -2,6 +2,7 @@ package uz.kassa.microservice.saga.process;
 
 import uz.kassa.microservice.saga.annotation.SagaOrchestEnd;
 import uz.kassa.microservice.saga.annotation.SagaOrchestEventHandler;
+import uz.kassa.microservice.saga.annotation.SagaOrchestException;
 import uz.kassa.microservice.saga.annotation.SagaOrchestStart;
 import uz.kassa.microservice.saga.event.SagaEventMessage;
 
@@ -53,6 +54,18 @@ public class SagaClassesConfigurer {
                 }
 
                 configurer.addEvents(sagaEventClass);
+            }
+        }
+        for (Method method : methods) {
+            SagaOrchestException exceptionHandler = method.getDeclaredAnnotation(SagaOrchestException.class);
+            if (exceptionHandler != null) {
+                SagaExceptionMethod sagaExceptionMethod = new SagaExceptionMethod();
+                sagaExceptionMethod.setMethodName(method.getName());
+                if (method.getParameters().length > 0) {
+                    sagaExceptionMethod.setParamClass(method.getParameters()[0].getType().getName());
+                }
+                configurer.addExceptionHandler(sagaExceptionMethod);
+                break;
             }
         }
     }
