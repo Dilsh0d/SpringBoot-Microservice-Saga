@@ -1,6 +1,7 @@
 package uz.kassa.microservice.saga.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.convert.RedisCustomConversions;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -16,6 +17,7 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableRedisRepositories(value = "uz.kassa.microservice.saga.model.repository")
+@ComponentScan("uz.kassa.microservice.saga.model.repository")
 public class RedisConfig {
 
     @Bean

@@ -155,7 +155,7 @@ public class SagaClass<T> {
                 SagaEventClass sagaEventClass = getEventClass(eventMessage.getType());
                 S sagaRoot = sagaResourcesInject(eventMessage, sagaEventClass);
                 invokeSagaExceptionMethod(sagaRoot, configurer.sagaExceptionMethod,exception,sagaEventClass, eventMessage);
-                saveSagaState(eventMessage, sagaEventClass, sagaRoot);
+//                saveSagaState(eventMessage, sagaEventClass, sagaRoot);
             } catch (Exception e) {
                 logger.warning("Exception: " + eventMessage.getType() + " sagaId=" + eventMessage.getId() + " event " + eventMessage.getPayload().getClass().getName() + " exception " + e.getMessage());
             }
@@ -192,10 +192,13 @@ public class SagaClass<T> {
                 method.invoke(sagaRoot, eventMessage.getPayload());
             } catch (NoSuchMethodException e) {
                 logger.warning("NoSuchMethodException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             } catch (IllegalAccessException e) {
                 logger.warning("IllegalAccessException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             } catch (InvocationTargetException e) {
                 logger.warning("InvocationTargetException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
