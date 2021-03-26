@@ -230,7 +230,8 @@ Declaration on the class where distributed transaction management between micros
 ```
 
 #### @SagaOrchestEventHandler
-Declaration with annotation method will be handle to from sent  **sagaGateway**  bean events.
+Declaration with annotation method will be handle from sent  **sagaGateway**  bean events.
+
 1.Send
 ```java
   @PostMapping(value = "/choose-payment-type")
