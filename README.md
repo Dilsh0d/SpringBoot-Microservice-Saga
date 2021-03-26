@@ -260,6 +260,52 @@ Declaration with annotation method will be handle from sent  **sagaGateway**  be
       }
     }
 ```
+
 #### @SagaOrchestStart
+Declaration annotation start point method of the Saga class. Maybe declaration more than two.
+```java
+  @SagaOrchestStart
+  @SagaOrchestEventHandler
+  public void handler(CreateOrderEvent event){
+      this.orderId = event.getId();
+      this.itemsId = event.getItems();
+
+      orderService.createOrder(event, amount);
+      orderPushNotification.sentClientNotification(event.getId(), "YOUR ORDER CREATED, PLEASE SELECT PAYMENT TYPE AND PAY FROM IT : [ " + PaymentType.getStrings()+" ]");
+  }
+```
 #### @SagaOrchestEnd
+Declaration annotation finish/ended point method of the Saga class. Maybe declaration more than two.
+```java
+  @SagaOrchestEnd
+  @SagaOrchestEventHandler
+  public void handler(SuccessOrderEvent event) {
+      orderService.orderSuccessfulPaymentDone(event);
+      orderPushNotification.sentClientNotification(event.getId(), "ORDER SUCCESSFUL PAYMENT DONE.");
+  }
+```
 #### @SagaOrchestException
+Declaration annotation any exception to handle of the Saga class. Must is declaration one time in the saga class. Maybe two option **@SagaOrchestException**  declaration method.
+1. With attribute **uz.kassa.microservice.saga.event.SagaExceptionHandler**
+```java
+  @SagaOrchestException
+  public void exceptionHandler(SagaExceptionHandler sagaExceptionHandler){
+      orderPushNotification.sentClientNotification(sagaExceptionHandler.getSagaId(),
+              "ORDER EXCEPTION IN EVENT CLASS"+sagaExceptionHandler.getExceptionEventClass()
+                      +" SAGA METHOD NAME "+ sagaExceptionHandler.getExceptionSagaMethodName() +"EXCEPTION MESSAGE :["+sagaExceptionHandler.getException().getMessage()+"]");
+
+      RollbackOrderEvent rollbackOrderEvent = new RollbackOrderEvent();
+      rollbackOrderEvent.setId(orderId);
+      sagaGateway.send(rollbackOrderEvent);
+  }
+```
+2. Without attribute. 
+```java
+  @SagaOrchestException
+  public void exceptionHandler(){
+      RollbackPaymentEvent rollbackOrderEvent = new RollbackPaymentEvent();
+      rollbackOrderEvent.setId(paymentId);
+      sagaGateway.send(rollbackOrderEvent);
+  }
+```
+
