@@ -11,15 +11,17 @@ Saga Orchestration Framework writing for provide transactions in the Spring Boot
 
 Microservice architecture has each application it's databases. Our business logic everything does not work only one microservice and sometimes your a business logic must to work more than two microservices. That situation doesn't work ACID concept to whole business logic and in the database will be to full up with doesn't finished data. For this will use saga orchestration design pattern for  distributed transactions. In details about it click this is [link](https://www.infoq.com/articles/saga-orchestration-outbox/).
 
-# Install.
+## Descriptions architecture
+This is framework to conversation microservice used  **JMS** api
+
+## Install.
 1. [Apache kafka](https://kafka.apache.org/downloads)
 2. [Redis](https://redis.io/download)
 3. [Java 8 or later](https://www.oracle.com/java/technologies/javase-downloads.html)
 
-# Getting started
+## Getting started
 
-You must add each microservice **pom.xml** its dependency
-Some basic Git commands are:
+1.You must add each microservice **pom.xml** its dependency:
 ```
 <dependency>
   <groupId>io.github.dilsh0d</groupId>
@@ -27,3 +29,18 @@ Some basic Git commands are:
   <version>0.0.6</version>
 </dependency>
 ```
+2. Declaration @EnableSagaOrchestration microservice in the starter app class. This annotation auto configure **Kafka** and **Redis** client connection.
+```java
+  @EnableSagaOrchestration
+  @EnableEurekaClient
+  @SpringBootApplication
+  public class OrderServiceApplication {
+
+      public static void main(String[] args) {
+          SpringApplication.run(OrderServiceApplication.class, args);
+      }
+
+  }
+```[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice)
+
+
