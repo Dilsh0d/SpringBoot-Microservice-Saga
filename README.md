@@ -64,4 +64,16 @@ This is framework to conversation microservice used  **JMS** api
     host: localhost
     port: 6379  
 ```
+That all we configured all things from three steps.
 
+## Annotations
+Next step look at the framework tools we work.
+
+| Annotations | README |
+| ------ | ------ |
+| @SagaAssociateId | [plugins/dropbox/README.md][PlDb] |
+| @SagaOrchestration | [plugins/github/README.md][PlGh] |
+| @SagaOrchestEventHandler | [plugins/googledrive/README.md][PlGd] |
+| @SagaOrchestStart | [plugins/onedrive/README.md][PlOd] |
+| @SagaOrchestEnd | [plugins/medium/README.md][PlMe] |
+| @SagaOrchestException | [plugins/googleanalytics/README.md][PlGa] |
