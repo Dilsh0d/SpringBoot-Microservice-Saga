@@ -1,14 +1,29 @@
 package uz.kassa.microservice.saga.event;
 
-import uz.kassa.microservice.saga.process.SagaEventClass;
-
 /**
  * @author Tadjiev Dilshod
  */
 public class SagaExceptionHandler {
     private String sagaId;
+    private String exceptionEventClass;
+    private String exceptionSagaMethodName;
     private Exception exception;
-    private SagaEventClass sagaEventClass;
+
+    public String getExceptionEventClass() {
+        return exceptionEventClass;
+    }
+
+    public void setExceptionEventClass(String exceptionEventClass) {
+        this.exceptionEventClass = exceptionEventClass;
+    }
+
+    public String getExceptionSagaMethodName() {
+        return exceptionSagaMethodName;
+    }
+
+    public void setExceptionSagaMethodName(String exceptionSagaMethodName) {
+        this.exceptionSagaMethodName = exceptionSagaMethodName;
+    }
 
     public Exception getException() {
         return exception;
@@ -16,14 +31,6 @@ public class SagaExceptionHandler {
 
     public void setException(Exception exception) {
         this.exception = exception;
-    }
-
-    public SagaEventClass getSagaEventClass() {
-        return sagaEventClass;
-    }
-
-    public void setSagaEventClass(SagaEventClass sagaEventClass) {
-        this.sagaEventClass = sagaEventClass;
     }
 
     public String getSagaId() {
