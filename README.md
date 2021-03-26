@@ -10,3 +10,20 @@ Saga Orchestration Framework writing for provide transactions in the Spring Boot
 - Durable: once a transaction commits, its results will not be lost regardless of subsequent failures.
 
 Microservice architecture has each application it's databases. Our business logic everything does not work only one microservice and sometimes your a business logic must to work more than two microservices. That situation doesn't work ACID concept to whole business logic and in the database will be to full up with doesn't finished data. For this will use saga orchestration design pattern for  distributed transactions. In details about it click this is [link](https://www.infoq.com/articles/saga-orchestration-outbox/).
+
+# Install.
+1. [Apache kafka](https://kafka.apache.org/downloads)
+2. [Redis](https://redis.io/download)
+3. [Java 8 or later](https://www.oracle.com/java/technologies/javase-downloads.html)
+
+# Getting started
+
+You must add each microservice **pom.xml** its dependency
+Some basic Git commands are:
+```
+<dependency>
+  <groupId>io.github.dilsh0d</groupId>
+  <artifactId>spring-microservice-saga</artifactId>
+  <version>0.0.6</version>
+</dependency>
+```
