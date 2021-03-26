@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -144,9 +145,10 @@ public class SagaClass<T> {
                 saveSagaState(eventMessage, sagaEventClass, sagaRoot);
             } catch (Exception e) {
                 if (configurer.sagaExceptionMethod != null) {
-                    exceptionHandler(eventMessage,e);
+//                    exceptionHandler(eventMessage,e);
                 }
                 logger.warning("Exception: " + eventMessage.getType() + " sagaId=" + eventMessage.getId() + " event " + eventMessage.getPayload().getClass().getName() + " exception " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -158,6 +160,7 @@ public class SagaClass<T> {
 //                saveSagaState(eventMessage, sagaEventClass, sagaRoot);
             } catch (Exception e) {
                 logger.warning("Exception: " + eventMessage.getType() + " sagaId=" + eventMessage.getId() + " event " + eventMessage.getPayload().getClass().getName() + " exception " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -178,10 +181,13 @@ public class SagaClass<T> {
                 }
             } catch (NoSuchMethodException e) {
                 logger.warning("NoSuchMethodException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             } catch (IllegalAccessException e) {
                 logger.warning("IllegalAccessException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             } catch (InvocationTargetException e) {
                 logger.warning("InvocationTargetException: " + sagaRoot.getClass().getName() + " method " + sagaEventClass.getMethodName() + " exception " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -207,7 +213,7 @@ public class SagaClass<T> {
             if (sagaEventClass.isStarter()) {
                 sagaRoot = sagaFactory.get();
             } else {
-                Optional<SagaEntry> sagaEntryOptional = repository().findByIdAndSagaType(eventMessage.getId(),eventMessage.getType());
+                Optional<SagaEntry> sagaEntryOptional = repository().findById(eventMessage.getId());
                 if (sagaEntryOptional.isPresent()) {
                     this.sagaEntry = sagaEntryOptional.get();
                     sagaRoot = (S) sagaEntryOptional.get().getPayload().getPayload();
@@ -247,6 +253,7 @@ public class SagaClass<T> {
                 eventHandlerProcess(getSagaEventMessage());
             } catch (InterruptedException e) {
                 logger.warning("InterruptedException: " + type().getName() + " exception " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 reentrantLock().unlock();
                 clear();

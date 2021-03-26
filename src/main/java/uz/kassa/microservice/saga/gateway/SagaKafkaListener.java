@@ -18,7 +18,7 @@ public class SagaKafkaListener {
     @Autowired
     private SagaClassesConfigurer sagaClassConfigurer;
 
-    @KafkaListener(topics = SagaGateway.TOPIC_SAGA, groupId = "saga_pattern_event", containerFactory = "concurrentMessageListenerContainer")
+    @KafkaListener(topics = SagaGateway.TOPIC_SAGA, containerFactory = "concurrentMessageListenerContainer")
     protected void kafkaListener(@Payload(required = false) SagaEventMessage<?> value, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
         sagaClassConfigurer.startSagaEventProcess(value);
     }
