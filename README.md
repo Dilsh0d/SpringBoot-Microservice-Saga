@@ -94,6 +94,9 @@ Annotation declaration saga instances event class unique id field and after star
 ```
 #### @SagaOrchestration
 Declaration on the class where distributed transaction management between microservice and this is annotation create Spring bean with scope prototype. If saga class will work with **@SagaOrchestStart** event handler then create spring instance else get by associate id from redis this object and create instance from this. Each come event to **Saga** class **@SagaOrchestEventHandler** method save to redis by associateId. If Event handler method declaration with annotation **@SagaOrchestEnd** then Saga Instance to finished its work and remove from redis by associate id. Saga class is to declare **@SagaOrchestException** so as we can catch exceptions and run **rollback()** events.
+
+>  Saga class declaration primitive and reference types you must create **get/set** methods else will be json parse exceptions.
+>  Saga class declaration spring bean fields must before add keyword **transient** and bean does not need create get/set method. 
 ```java
   @SagaOrchestration
   public class OrderSaga {
