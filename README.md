@@ -163,7 +163,8 @@ Declaration on the class where distributed transaction management between micros
           this.itemsId = event.getItems();
 
           orderService.createOrder(event, amount);
-          orderPushNotification.sentClientNotification(event.getId(), "YOUR ORDER CREATED, PLEASE SELECT PAYMENT TYPE AND PAY FROM IT : [ " + PaymentType.getStrings()+" ]");
+          orderPushNotification.sentClientNotification(event.getId(), 
+          "YOUR ORDER CREATED, PLEASE SELECT PAYMENT TYPE AND PAY FROM IT : [ " + PaymentType.getStrings()+" ]");
       }
 
       @SagaOrchestEventHandler
