@@ -39,6 +39,13 @@
 		</developer>
 	</developers>
 
+	<licenses>
+		<license>
+			<name>Apache 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
 	<scm>
 		<url>https://github.com/Dilsh0d/SpringBoot-Microservice-Saga</url>
 		<connection>scm:git:git://github.com:Dilsh0d/SpringBoot-Microservice-Saga.git</connection>
