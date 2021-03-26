@@ -230,6 +230,35 @@ Declaration on the class where distributed transaction management between micros
 ```
 
 #### @SagaOrchestEventHandler
+Declaration with annotation method will be handle to from sent  **sagaGateway**  bean events.
+1.Send
+```java
+  @PostMapping(value = "/choose-payment-type")
+  public @ResponseBody String createOrder(@RequestBody ChooseOrderPaymentTypeEvent event) {
+      sagaGateway.send(event);
+      return event.getId();
+  }
+```
+2. Handle
+```java
+    @SagaOrchestEventHandler
+    public void handler(ChooseOrderPaymentTypeEvent event) {
+      if (paymentId == null) {
+          CreateReceiptPaymentEvent createReceiptPaymentEvent = new CreateReceiptPaymentEvent();
+          createReceiptPaymentEvent.setId(UUID.randomUUID().toString());
+          createReceiptPaymentEvent.setOrderId(orderId);
+          createReceiptPaymentEvent.setPaymentType(event.getPaymentType());
+          createReceiptPaymentEvent.setAmount(amount);
+          sagaGateway.send(createReceiptPaymentEvent);
+
+      } else {
+          TryAgainReceiptPaymentEvent againReceiptPaymentEvent = new TryAgainReceiptPaymentEvent();
+          againReceiptPaymentEvent.setId(paymentId);
+          againReceiptPaymentEvent.setPaymentType(event.getPaymentType());
+          sagaGateway.send(againReceiptPaymentEvent);
+      }
+    }
+```
 #### @SagaOrchestStart
 #### @SagaOrchestEnd
 #### @SagaOrchestException
