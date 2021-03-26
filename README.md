@@ -76,4 +76,24 @@ Next step we look at the framework **6** annotation tools which of what does is 
 | ```@SagaOrchestEventHandler``` | Declaration only above event hanler methods in the saga class   |
 | ```@SagaOrchestStart``` | Declaration with @SagaOrchestEventHandler event handler methods, that is meant saga class started with method. |
 | ```@SagaOrchestEnd``` | Declaration with @SagaOrchestEventHandler event handler methods, that is meant saga class ended with method |
-| ```@SagaOrchestException``` | Declaration for saga exception handlers |
+| ```@SagaOrchestException``` | Declaration in the saga class exception handlers |
+
+### @SagaAssociateId
+Annotation declaration saga instances event class unique id field and after start saga from this id to store use this **id** saga instance to redis and next actions for use  as (associate Id). You can declaration other need fields but don't forget create get/set methods so as doesn't parse in the save to rides.
+```java
+  @Getter
+  @Setter
+  public class CreateOrderEvent {
+
+      @SagaAssociateId
+      private String id;
+
+      private List<Integer> items;
+
+  }
+```
+### @SagaOrchestration
+### @SagaOrchestEventHandler
+### @SagaOrchestStart
+### @SagaOrchestEnd
+### @SagaOrchestException
