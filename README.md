@@ -190,7 +190,8 @@ Declaration on the class where distributed transaction management between micros
           this.paymentType = event.getPaymentType();
 
           orderService.updateOrder(event);
-          orderPushNotification.sentClientNotification(event.getId(), "PAYMENT ID:[ " + paymentId + " ] " + paymentType.name() + " SUCCESSFUL SELECTED. YOU CAN PAY FROM IT'S PAYMENT TYPE");
+          orderPushNotification.sentClientNotification(event.getId(), "PAYMENT ID:[ " + paymentId + " ] " 
+          + paymentType.name() + " SUCCESSFUL SELECTED. YOU CAN PAY FROM IT'S PAYMENT TYPE");
       }
 
       @SagaOrchestEnd
@@ -220,7 +221,8 @@ Declaration on the class where distributed transaction management between micros
       public void exceptionHandler(SagaExceptionHandler sagaExceptionHandler){
           orderPushNotification.sentClientNotification(sagaExceptionHandler.getSagaId(),
                   "ORDER EXCEPTION IN EVENT CLASS"+sagaExceptionHandler.getExceptionEventClass()
-                          +" SAGA METHOD NAME "+ sagaExceptionHandler.getExceptionSagaMethodName() +"EXCEPTION MESSAGE :["+sagaExceptionHandler.getException().getMessage()+"]");
+                          +" SAGA METHOD NAME "+ sagaExceptionHandler.getExceptionSagaMethodName() 
+                          +"EXCEPTION MESSAGE :["+sagaExceptionHandler.getException().getMessage()+"]");
 
           RollbackOrderEvent rollbackOrderEvent = new RollbackOrderEvent();
           rollbackOrderEvent.setId(orderId);
@@ -271,7 +273,8 @@ Declaration annotation start point method of the Saga class. Maybe declaration m
       this.itemsId = event.getItems();
 
       orderService.createOrder(event, amount);
-      orderPushNotification.sentClientNotification(event.getId(), "YOUR ORDER CREATED, PLEASE SELECT PAYMENT TYPE AND PAY FROM IT : [ " + PaymentType.getStrings()+" ]");
+      orderPushNotification.sentClientNotification(event.getId(), 
+      "YOUR ORDER CREATED, PLEASE SELECT PAYMENT TYPE AND PAY FROM IT : [ " + PaymentType.getStrings()+" ]");
   }
 ```
 #### @SagaOrchestEnd
@@ -292,7 +295,8 @@ Declaration annotation any exception to handle of the Saga class. Must is declar
   public void exceptionHandler(SagaExceptionHandler sagaExceptionHandler){
       orderPushNotification.sentClientNotification(sagaExceptionHandler.getSagaId(),
               "ORDER EXCEPTION IN EVENT CLASS"+sagaExceptionHandler.getExceptionEventClass()
-                      +" SAGA METHOD NAME "+ sagaExceptionHandler.getExceptionSagaMethodName() +"EXCEPTION MESSAGE :["+sagaExceptionHandler.getException().getMessage()+"]");
+                      +" SAGA METHOD NAME "+ sagaExceptionHandler.getExceptionSagaMethodName() +
+                      "EXCEPTION MESSAGE :["+sagaExceptionHandler.getException().getMessage()+"]");
 
       RollbackOrderEvent rollbackOrderEvent = new RollbackOrderEvent();
       rollbackOrderEvent.setId(orderId);
