@@ -69,11 +69,11 @@ That all we configured all things from three steps.
 ## Saga tools
 Next step we look at the framework **6** annotation tools which of what does is its.
 
-| Annotations | README |
+| Annotations | Descreption |
 | ------ | ------ |
-| ```@SagaAssociateId``` | [plugins/dropbox/README.md][PlDb] |
-| ```@SagaOrchestration``` | [plugins/github/README.md][PlGh] |
-| ```@SagaOrchestEventHandler``` | [plugins/googledrive/README.md][PlGd] |
-| ```@SagaOrchestStart``` | [plugins/onedrive/README.md][PlOd] |
-| ```@SagaOrchestEnd``` | [plugins/medium/README.md][PlMe] |
-| ```@SagaOrchestException``` | [plugins/googleanalytics/README.md][PlGa] |
+| ```@SagaAssociateId``` | Saga associate will save in redis or get from redis. |
+| ```@SagaOrchestration``` | Declaration only above saga class. |
+| ```@SagaOrchestEventHandler``` | Declaration only above event hanler methods in the saga class   |
+| ```@SagaOrchestStart``` | Declaration with @SagaOrchestEventHandler event handler methods, that is meant saga class started with method. |
+| ```@SagaOrchestEnd``` | Declaration with @SagaOrchestEventHandler event handler methods, that is meant saga class ended with method |
+| ```@SagaOrchestException``` | Declaration for saga exception handlers |
