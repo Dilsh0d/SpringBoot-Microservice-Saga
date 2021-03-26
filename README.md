@@ -30,6 +30,7 @@ This is framework to conversation microservice used  **JMS** api
 </dependency>
 ```
 2. Declaration @EnableSagaOrchestration microservice in the starter app class. This annotation auto configure **Kafka** and **Redis** client connection.
+[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice/blob/main/order-service/src/main/java/io/github/dilsh0d/OrderServiceApplication.java)
 ```java
   @EnableSagaOrchestration
   @EnableEurekaClient
@@ -42,9 +43,9 @@ This is framework to conversation microservice used  **JMS** api
 
   }
 ```
-[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice)
 
 3. **application.properties** or **application.yml** file add this configuration
+[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice/blob/main/order-service/src/main/resources/application.yml)
 ```javascript
   kafka:
     producer:
