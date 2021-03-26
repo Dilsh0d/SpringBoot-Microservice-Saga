@@ -41,6 +41,26 @@ This is framework to conversation microservice used  **JMS** api
       }
 
   }
-```[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice)
+```
+[example from project](https://github.com/Dilsh0d/SpringCloudMicroservice)
 
+3. **application.properties** or **application.yml** file add this configuration
+```javascript
+  kafka:
+    producer:
+      transaction-id-prefix: saga_pattern_event
+      client-id: events_producer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: localhost:9092
+    consumer:
+      groupid: saga_pattern_order_event
+      client-id: events_order_consumer
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
+      max-poll-records: 1
+  redis:
+    host: localhost
+    port: 6379  
+```
 
