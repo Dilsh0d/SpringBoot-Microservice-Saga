@@ -20,7 +20,8 @@ This is framework to conversation microservice used  **JMS** api
 3. [Java 8 or later](https://www.oracle.com/java/technologies/javase-downloads.html)
 
 ## Introduction
-[Getting started](#getting-started)
+1. [Getting started](#getting-started)
+2. [Saga tools](#saga-tools)
 
 ## Getting Started
 
