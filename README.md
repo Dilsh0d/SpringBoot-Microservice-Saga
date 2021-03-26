@@ -66,8 +66,8 @@ This is framework to conversation microservice used  **JMS** api
 ```
 That all we configured all things from three steps.
 
-## Annotations
-Next step look at the framework tools we work.
+## Saga tools
+Next step we look at the framework **6** annotation tools which of what does is its.
 
 | Annotations | README |
 | ------ | ------ |
