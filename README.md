@@ -313,4 +313,8 @@ Declaration annotation any exception to handle of the Saga class. Must is declar
       sagaGateway.send(rollbackOrderEvent);
   }
 ```
-
+## SagaGateway
+This is bean realization to send events to Saga instance and run it. Actually under the bean hidden big logic. What does **SagaGateway** do?. It get POJO class and send to **Kafka** another framework bean listen **Kafka** and consumer events and redirect to **Saga** Instance.
+```java
+   sagaGateway.send(againReceiptPaymentEvent);
+```
