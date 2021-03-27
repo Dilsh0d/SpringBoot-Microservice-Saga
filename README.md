@@ -12,7 +12,7 @@ Saga Orchestration Framework writing for provide transactions in the Spring Boot
 Microservice architecture has each application it's databases. Our business logic everything does not work only one microservice and sometimes your a business logic must to work more than two microservices. That situation doesn't work ACID concept to whole business logic and in the database will be to full up with doesn't finished data. For this will use saga orchestration design pattern for  distributed transactions. In details about it click this is [link](https://www.infoq.com/articles/saga-orchestration-outbox/).
 
 ## Descriptions architecture
-This is framework to conversation microservice used  **JMS** api
+This is framework to conversation microservice used **Apache Kafka** api and each event state save in the **Redis** to finish saga.
 
 ## Install.
 1. [Apache kafka](https://kafka.apache.org/downloads)
