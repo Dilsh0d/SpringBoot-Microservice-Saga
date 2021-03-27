@@ -13,6 +13,7 @@ Microservice architecture has each application it's databases. Our business logi
 
 ## Descriptions architecture
 This is framework to conversation microservice used **Apache Kafka** api and each event state save in the **Redis** to finish saga.
+![Saga Architecture](https://i.ibb.co/b5wYdTV/Saga-Architecture.png)
 
 ## Install.
 1. [Apache kafka](https://kafka.apache.org/downloads)
